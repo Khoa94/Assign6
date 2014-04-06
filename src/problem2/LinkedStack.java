@@ -4,7 +4,7 @@ import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import problem2.ArrayBasedStack.parensPositions;
+
 
 /**
  * A simple array-based stack.
@@ -108,58 +108,177 @@ public class LinkedStack<T>
 
   static class ParensPositions
   {
-    char current;
+    char paren;
     int index;
 
     public ParensPositions(char inputCurrent, int inputIndex)
     {
-      this.current = inputCurrent;
+      this.paren = inputCurrent;
       this.index = inputIndex;
     }// parensPositions constructor
   }// parensPositions class
-  
-  public static String printMatching (String str)
-      throws Exception
+
+  public static void printDashesParens(ParensPositions charOnStack,
+                                       char closingParen,
+                                       int indexOfClosingParen)
+  {
+    for (int i = 0; i < charOnStack.index ; i++)
       {
-        ArrayBasedStack<ParensPositions> parenStack = new ArrayBasedStack(str.length());
-        int i = 0;
-        
-        PrintWriter pen = new PrintWriter(System.out, true);
-        
-        while (i < str.length())
+        System.out.print(" ");
+      }
+
+    System.out.print(charOnStack.paren);
+
+    for (int i = charOnStack.index; i < indexOfClosingParen-1; i++)
+      {
+        System.out.print("-");
+      }
+
+    System.out.print(closingParen);
+    System.out.println();
+  }
+  
+  public static void printUnmatchedMessage(ParensPositions new1)
+  {
+    char currentClosingParen= new1.paren;
+    int indexOfCurrentClosingParen= new1.index;
+    for (int j = 0; j < indexOfCurrentClosingParen ; j++)
+      {
+        System.out.print(" ");
+      }
+      System.out.println(currentClosingParen + "<- UNMATCHED");
+  }
+
+  public static void printMatching(String str)
+    throws Exception
+  {
+    System.out.println(str);
+    LinkedStack<ParensPositions> parenStack =
+        new LinkedStack();
+    int i = 0;
+
+    PrintWriter pen = new PrintWriter(System.out, true);
+
+    ParensPositions charOnStack1;
+    while (i < str.length())
+      {
+        char currentChar = str.charAt(i);
+        if (currentChar == '(' || currentChar == '[' || currentChar == '{'
+            || currentChar == '<' || currentChar == '\'')
           {
-            char currentChar = str.charAt(i);
-            if (currentChar=='(' || currentChar=='[' || currentChar=='{'  || currentChar=='<' || currentChar=='\'')
+            ParensPositions currentPair = new ParensPositions(currentChar, i);
+            parenStack.push(currentPair);
+          }// if
+        else
+          {
+            if (!parenStack.isEmpty())
               {
-                ParensPositions currentPair = new ParensPositions(currentChar, i);
-                parenStack.push(currentPair);
-              }// if
             
-            else {
-              switch (currentChar)
+            switch (currentChar)
               {
                 case ')':
-                  if ((char) parenStack.peek().current == '(')
+                  if (parenStack.peek().paren == '(')
                     {
-                      parenStack.pop();
+                      charOnStack1 = parenStack.pop();
+                      printDashesParens(charOnStack1, currentChar, i);
                     }// if
-                  
-          
-              }
-            
-            
-            
-            
-            
-            
-            }
-          }
+                  else 
+                    {
+                    ParensPositions unmatchedParen = new ParensPositions(currentChar, i); 
+                    printUnmatchedMessage(unmatchedParen);
+                    }
+                  break;
 
+                case ']':
+                  if ( parenStack.peek().paren == '[')
+                    {
+
+                      charOnStack1 = parenStack.pop();
+                      printDashesParens(charOnStack1, currentChar, i);
+                    }// if
+                  else 
+                    {
+                      ParensPositions unmatchedParen = new ParensPositions(currentChar, i); 
+                      printUnmatchedMessage(unmatchedParen);
+                      }
+                  break;
+
+                case '}':
+                  if (parenStack.peek().paren == '{')
+                    {
+                      charOnStack1 = parenStack.pop();
+                      printDashesParens(charOnStack1, currentChar, i);
+                    }// if
+                  else 
+                    {
+                      ParensPositions unmatchedParen = new ParensPositions(currentChar, i); 
+                      printUnmatchedMessage(unmatchedParen);
+                      }
+                  break;
+
+                case '>':
+                  if (parenStack.peek().paren == '<')
+                    {
+                      charOnStack1 = parenStack.pop();
+                      printDashesParens(charOnStack1, currentChar, i);
+                    }// if
+                  else 
+                    {
+                      ParensPositions unmatchedParen = new ParensPositions(currentChar, i); 
+                      printUnmatchedMessage(unmatchedParen);
+                      }
+                  break;
+
+                case '\'':
+                  if ( parenStack.peek().paren =='\'')
+                    {
+                      charOnStack1 = parenStack.pop();
+                      printDashesParens(charOnStack1, currentChar, i);
+                    }// if
+                  else 
+                    {
+                      ParensPositions unmatchedParen = new ParensPositions(currentChar, i); 
+                      printUnmatchedMessage(unmatchedParen);
+                      }
+                  break;
+              }//switch
+              }//if not empty
+            else if (currentChar == ')' || currentChar == ']' || currentChar == '}'
+                  || currentChar == '>' || currentChar == '\''){
+            ParensPositions Gross = new ParensPositions (currentChar,i);
+            printUnmatchedMessage(Gross);
+              }
+              
+          }//else
+     
+        i++;
+      }//while
+
+    while(!parenStack.isEmpty())
+      {
+       
         
+        printUnmatchedMessage(parenStack.pop());
+
+        //ParensPositions hello = parenStack.pop();
+        //printUnmatchedMessage(hello.paren,hello.index);
+        //pen.println(parenStack.pop().paren + "< - UNMATCHED");
+        //printUnmatchedMessage()
+      }
+  }//printMatching(String str)
+  
+  public static void main(String[] args)
+      throws Exception
+      {
+       String str1 = "(He)ll)o (world)";
+      String str2= "{oh boy] (I am having) (<so> much) fun matching )symbols}";
+       printMatching(str1);
+         
       }
   
-  
+
 } // LinkedStack<T>
+
 
 
 
