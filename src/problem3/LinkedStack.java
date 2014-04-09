@@ -135,16 +135,21 @@ public class LinkedStack<T>
         if (currentChar >= '0' && currentChar <= '9')
           {
             currentNum.append(input.charAt(i));
-          }
-        else if (currentChar == ' ')
-          {
-            if (currentNum.length() != 0)
+            if (i==inputLength-1)
               {
                 RPNStack.push(Integer.parseInt(currentNum.toString()));
-                // currentNum = null;
                 currentNum.setLength(0);
               }
           }
+        
+        
+        else if ((currentChar == ' ' && currentNum.length() != 0))
+          {
+                RPNStack.push(Integer.parseInt(currentNum.toString()));
+                currentNum.setLength(0);
+         }
+          
+        
         else if (currentChar == '+')
           {
             int temp1 = RPNStack.pop();
@@ -206,9 +211,12 @@ public class LinkedStack<T>
     System.out.println("It rounds down to the nearest whole integer");
     System.out.println("Put a space in between each val you enter");
     System.out.println("The number of integers needs to be 1 more than the number of operations");
-    System.out.println("An Example would be like: 4 5 + 3 /");
+    System.out.println("An Example would be like:4 5 + 3 /");
     System.out.println("Type p to print current value, s to print the entire stack, c to clear everything");
-    while (true)
+//    RPNCalculator("c", RPNStack);
+//    RPNCalculator("5 4", RPNStack);
+//    RPNCalculator("p", RPNStack);
+   while (true)
       {
         input = eyes.readLine();
         RPNCalculator(input, RPNStack);
