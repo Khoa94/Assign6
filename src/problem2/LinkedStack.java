@@ -8,7 +8,8 @@ import java.util.NoSuchElementException;
  * A simple array-based stack.
  * 
  * @author Samuel A. Rebelsky
- * @author Your Name Here
+ * @author Victoria Tsou
+ * @author Khoa Nguyen
  */
 public class LinkedStack<T>
     implements
@@ -103,7 +104,7 @@ public class LinkedStack<T>
     throws Exception
   {
     return this.get();
-  } // pop
+  } // pop()
 
   /*
    * The class that store the symbols and its position.
@@ -297,28 +298,11 @@ public class LinkedStack<T>
         printUnmatchedMessage(parenStack.pop());
       }
   }// printMatching(String str).
-  
-  public static void main(String[] args)
-      throws Exception
-      {
-       String str1 = "(Hello (world)";
-      String str2= "{oh boy] (I am having) (<so> much) fun matching `symbols'}";
-      String str3= "(Hello (world))}  ]";
-       printMatching(str3);
-      }
-  
-
 } // LinkedStack<T>
 
-
-
-
-
-
-
-
 class LinkedStackIterator<T>
-    implements Iterator<T>
+    implements
+      Iterator<T>
 {
   // +--------+----------------------------------------------------------
   // | Fields |

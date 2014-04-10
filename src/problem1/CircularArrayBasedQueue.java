@@ -1,8 +1,7 @@
 package problem1;
 
 import java.util.Iterator;
-
-import taojava.util.Queue;
+import java.util.NoSuchElementException;
 
 public class CircularArrayBasedQueue<T>
 {
@@ -17,6 +16,12 @@ public class CircularArrayBasedQueue<T>
   int front; // where we call get()
   int back; // where we call put()
   int size; // the number of elements in the array
+
+  // Helper
+  int back()
+  {
+    return this.size;
+  } // back()
 
   // Constructor
   public CircularArrayBasedQueue(int capacity) throws Exception
@@ -36,12 +41,12 @@ public class CircularArrayBasedQueue<T>
   public boolean isEmpty()
   {
     return this.size <= 0;
-  }//isEmpty
+  }// isEmpty
 
   public boolean isFull()
   {
     return this.size == this.values.length;
-  }//isFull
+  }// isFull
 
   public void put(T val)
     throws Exception
@@ -54,7 +59,7 @@ public class CircularArrayBasedQueue<T>
     this.values[this.back] = val;
     this.back = (this.back + 1) % this.values.length;
     this.size++;
-  }//put(T val)
+  }// put(T val)
 
   public T get()
     throws Exception
@@ -68,10 +73,9 @@ public class CircularArrayBasedQueue<T>
     T result = this.values[this.front];
     this.values[this.front] = null;
     this.front = (this.front + 1) % this.values.length;
-
     this.size--;
     return result;
-  }//get()
+  }// get()
 
   public T peek()
     throws Exception
@@ -81,12 +85,83 @@ public class CircularArrayBasedQueue<T>
         throw new Exception("empty");
       } // if empty
     return this.values[this.front];
-  }//peek()
+  }// peek()
 
+  // Print every value in the array out
   public void print()
   {
-    for (int i =0; i < this.values.length; i++)
-      {System.out.print(this.values[i]+ " ");
-  }System.out.println();
-  }
-}
+    for (int i = 0; i < this.values.length; i++)
+      {
+        System.out.print(this.values[i] + " ");
+      }// for
+    System.out.println();
+  }// print()
+
+  public Iterator<T> iterator()
+  {
+    return new CircularIterator<T>(this);
+  } // iterator()
+
+}// class CircularArrayBasedQueue<T>
+
+class CircularIterator<T>
+    implements
+      Iterator<T>
+{
+  // +--------+----------------------------------------------------------
+  // | Fields |
+  // +--------+
+
+  /**
+   * The current position in the iteration.
+   */
+  int i;
+  /**
+   * The array that contains the values in the stack.
+   */
+  T[] values;
+
+  // +--------------+----------------------------------------------------
+  // | Constructors |
+  // +--------------+
+
+  /**
+   * Create a new iterator.
+   */
+  public CircularIterator(CircularArrayBasedQueue<T> circularArray)
+  {
+    this.i = -1; // when we first call next(), next() will return values[0]
+    this.values = (T[]) circularArray.values;
+  } // CircularIterator
+
+  // +---------+---------------------------------------------------------
+  // | Methods |
+  // +---------+
+
+  @Override
+  public T next()
+    throws NoSuchElementException
+  {
+    if (!this.hasNext())
+      {
+        throw new NoSuchElementException("no elements remain");
+      } // if no elements
+    i = ((i + 1) % values.length);
+    return this.values[i];
+  } // next()
+
+  @Override
+  public boolean hasNext()
+  {
+    int j = i;
+    j = ((j + 1) % values.length);
+    return this.values[j] != null;
+  } // hasNext()
+
+  @Override
+  public void remove()
+    throws UnsupportedOperationException
+  {
+    throw new UnsupportedOperationException();
+  } // remove()
+} // CircularIterator<T>

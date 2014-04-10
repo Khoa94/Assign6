@@ -7,16 +7,16 @@ import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-
-
 /**
  * A simple array-based stack.
- *
+ * 
  * @author Samuel A. Rebelsky
- * @author Your Name Here
+ * @author Victoria Tsou
+ * @author Khoa Nguyen
  */
 public class LinkedStack<T>
-    implements Stack<T>
+    implements
+      Stack<T>
 {
   // +--------+----------------------------------------------------------
   // | Fields |
@@ -107,27 +107,23 @@ public class LinkedStack<T>
     throws Exception
   {
     return this.get();
-  } // pop
+  } // pop()
 
-  
   /*
-   * pre: no fractions, no negative numbers
+   * pre: only non-negative integers, there's 1 space between numbers and between operations.
    */
 
   public static void RPNCalculator(String input, LinkedStack<Integer> RPNStack)
     throws NumberFormatException,
       Exception
   {
-    // LinkedStack<Integer> RPNStack = new LinkedStack();
-    // String input= "";
-    // BufferedReader eyes = new BufferedReader(new
-    // InputStreamReader(System.in));
-    // System.out.println("Welcome to the Calculator! ");
     StringBuilder currentNum = new StringBuilder();
     PrintWriter pen = new PrintWriter(System.out, true);
 
-    // input=eyes.readLine();
     int inputLength = input.length();
+
+    // read through input and push numbers onto the stack. If see operation
+    // signs, we perform the operations
     for (int i = 0; i < inputLength; i++)
       {
         char currentChar = input.charAt(i);
@@ -135,97 +131,124 @@ public class LinkedStack<T>
         if (currentChar >= '0' && currentChar <= '9')
           {
             currentNum.append(input.charAt(i));
-            if (i==inputLength-1)
+            if (i == inputLength - 1)
               {
                 RPNStack.push(Integer.parseInt(currentNum.toString()));
                 currentNum.setLength(0);
-              }
-          }
-        
-        
+              }// if
+          }// if currentChar is a digit
+
         else if ((currentChar == ' ' && currentNum.length() != 0))
           {
-                RPNStack.push(Integer.parseInt(currentNum.toString()));
-                currentNum.setLength(0);
-         }
-          
-        
-        else if (currentChar == '+')
-          {
-            int temp1 = RPNStack.pop();
-            int temp2 = RPNStack.pop();
-            RPNStack.push(temp2 + temp1);
-          }
-        else if (currentChar == '-')
-          {
-            int temp1 = RPNStack.pop();
-            int temp2 = RPNStack.pop();
-            RPNStack.push(temp2 - temp1);
-          }
-        else if (currentChar == '*')
-          {
-            int temp1 = RPNStack.pop();
-            int temp2 = RPNStack.pop();
-            RPNStack.push(temp2 * temp1);
-          }
-        else if (currentChar == '/')
-          {
-            int temp1 = RPNStack.pop();
-            int temp2 = RPNStack.pop();
-            RPNStack.push(temp2 / temp1);
-          }
-        else if (currentChar == 'p')
-          {
-            pen.println(RPNStack.peek());
-          }
-        else if (currentChar == 's')
-          {
-            Iterator RPNIterator = RPNStack.iterator();
-            pen.println("The stack is:");
-            while (RPNIterator.hasNext())
-              {
-                pen.println(RPNIterator.next());
-              }
-          }
-        else if (currentChar == 'c')
-          {
-            Iterator RPNIterator = RPNStack.iterator();
-            while (RPNIterator.hasNext())
-              {
-                RPNIterator.next();
-                RPNIterator.remove();
-              }// while
-            pen.println("We have cleared the Stack");
+            RPNStack.push(Integer.parseInt(currentNum.toString()));
+            currentNum.setLength(0);
           }// else if
-      }
-  }//
 
-  public static void main(String[] args)
-    throws NumberFormatException,
-      Exception
-  {
-    String input = "";
-    LinkedStack<Integer> RPNStack = new LinkedStack();
-    BufferedReader eyes = new BufferedReader(new InputStreamReader(System.in));
-    System.out.println("Welcome to the RPN Calculator");
-    System.out.println("It rounds down to the nearest whole integer");
-    System.out.println("Put a space in between each val you enter");
-    System.out.println("The number of integers needs to be 1 more than the number of operations");
-    System.out.println("An Example would be like:4 5 + 3 /");
-    System.out.println("Type p to print current value, s to print the entire stack, c to clear everything");
-//    RPNCalculator("c", RPNStack);
-//    RPNCalculator("5 4", RPNStack);
-//    RPNCalculator("p", RPNStack);
-   while (true)
-      {
-        input = eyes.readLine();
-        RPNCalculator(input, RPNStack);
-      }//while
-  }// main
+        else if (!RPNStack.isEmpty())
+          {
+            // operations
+            if (currentChar == '+')
+              {
+                int temp1 = RPNStack.pop();
+                int temp2 = RPNStack.pop();
+                RPNStack.push(temp2 + temp1);
+              }// if
+            else if (currentChar == '-')
+              {
+                int temp1 = RPNStack.pop();
+                int temp2 = RPNStack.pop();
+                RPNStack.push(temp2 - temp1);
+              }// esle if
+            else if (currentChar == '*')
+              {
+                int temp1 = RPNStack.pop();
+                int temp2 = RPNStack.pop();
+                RPNStack.push(temp2 * temp1);
+              }// else if
+            else if (currentChar == '/')
+              {
+                int temp1 = RPNStack.pop();
+                int temp2 = RPNStack.pop();
+                RPNStack.push(temp2 / temp1);
+              }// else if
+            else if (currentChar == 'p')
+              {
+                pen.println(RPNStack.peek());
+              }// else if
+            else if (currentChar == 's')
+              {
+                Iterator RPNIterator = RPNStack.iterator();
+                pen.println("The stack is:");
+                while (RPNIterator.hasNext())
+                  {
+                    pen.println(RPNIterator.next());
+                  }// while
+              }// else if
+            else if (currentChar == 'c')
+              {
+                while (!RPNStack.isEmpty())
+                  {
+                    RPNStack.pop();
+                  }// while not empty, keep deleting
+                pen.println("We have cleared the Stack");
+              }// else if
+            else if (currentChar == 'r') // spell out the top element of the
+                                         // stack
+              {
+                String toSpell = (RPNStack.peek().toString());
+                for (int j = 0; j < toSpell.length(); j++)
+                  {
+                    char numToConvertToWord = toSpell.charAt(j);
+                      {
+                        switch (numToConvertToWord)
+                          {
+                            case '0':
+                              System.out.print("Zero ");
+                              break;
+                            case '1':
+                              System.out.print("One ");
+                              break;
+                            case '2':
+                              System.out.print("Two ");
+                              break;
+                            case '3':
+                              System.out.print("Three ");
+                              break;
+                            case '4':
+                              System.out.print("Four ");
+                              break;
+                            case '5':
+                              System.out.print("Five ");
+                              break;
+                            case '6':
+                              System.out.print("Six ");
+                              break;
+                            case '7':
+                              System.out.print("Seven ");
+                              break;
+                            case '8':
+                              System.out.print("Eight ");
+                              break;
+                            case '9':
+                              System.out.print("Nine ");
+                              break;
+                          }// switch
+                      }// numToConvertToWord
+                  }// if number has more than one digit
+              }// else if currentChar=='r'
+          }// outer else if
+
+        else if (RPNStack.isEmpty())
+          {
+            pen.println("There's nothing on the stack");
+          }// else if
+      }// for
+  }// RPNCalculator
 } // LinkedStack<T>
 
 class LinkedStackIterator<T>
-    implements Iterator<T>
+    implements
+      Iterator<T>
 {
   // +--------+----------------------------------------------------------
   // | Fields |
@@ -265,7 +288,7 @@ class LinkedStackIterator<T>
   public boolean hasNext()
   {
     return (this.next != null);
-  } // hasNext9)
+  } // hasNext()
 
   @Override
   public void remove()

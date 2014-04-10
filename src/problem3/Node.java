@@ -24,8 +24,7 @@ public class Node<T>
   // +--------------+
 
   /**
-   * Create a new node that contains val and that links to
-   * next.
+   * Create a new node that contains val and that links to next.
    */
   public Node(T value, Node<T> next)
   {

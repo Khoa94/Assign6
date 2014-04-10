@@ -4,57 +4,48 @@ import java.util.Iterator;
 
 /**
  * A linear structure that follows the last-in, first-out policy.
- *
+ * 
  * @author Samuel A. Rebelsky
  */
 public interface Stack<T>
-    extends LinearStructure<T>
+    extends
+      LinearStructure<T>
 {
   /**
    * Add an element to the stack.
-   *
+   * 
    * @param val
-   *   the value to add.
-   * @pre
-   *   !this.isFull()
-   * @post
-   *   The stack now contains an additional element of val.
+   *          the value to add.
+   * @pre !this.isFull()
+   * @post The stack now contains an additional element of val.
    * @exception Exception
-   *   If the structure is full.
+   *              If the structure is full.
    */
   public void put(T val)
     throws Exception;
 
   /**
-   * Remove the most recently added element that is still in the
-   * stack.
-   *
-   * @return
-   *   val, a value.
-   * @pre
-   *   !this.isEmpty()
-   * @post
-   *   The structure contains one fewer copy of val.
-   * @post
-   *   Every element that remains in the stack was added less recently
-   *   than val.
+   * Remove the most recently added element that is still in the stack.
+   * 
+   * @return val, a value.
+   * @pre !this.isEmpty()
+   * @post The structure contains one fewer copy of val.
+   * @post Every element that remains in the stack was added less recently than
+   *       val.
    * @exception Exception
-   *   If the structure is empty.
+   *              If the structure is empty.
    */
   public T get()
     throws Exception;
 
   /**
    * Determine what element will next be removed by get.
-   *
-   * @return
-   *   val, a value.
-   * @pre
-   *   !this.isEmpty()
-   * @post
-   *   Every other value in the stack was added less recently than val.
+   * 
+   * @return val, a value.
+   * @pre !this.isEmpty()
+   * @post Every other value in the stack was added less recently than val.
    * @exception Exception
-   *   If the structure is empty.
+   *              If the structure is empty.
    */
   public T peek()
     throws Exception;
@@ -75,13 +66,13 @@ public interface Stack<T>
   public Iterator<T> iterator();
 
   /**
-   * Push a value on the stack.  (An alias for put.)
+   * Push a value on the stack. (An alias for put.)
    */
   public void push(T val)
     throws Exception;
 
   /**
-   * Pop a value from the stack.  (An alias for get.)
+   * Pop a value from the stack. (An alias for get.)
    */
   public T pop()
     throws Exception;

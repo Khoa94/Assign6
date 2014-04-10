@@ -3,57 +3,48 @@ package problem3;
 import java.util.Iterator;
 
 /**
- * Simple linear structures, which let you add and remove items one 
- * at a time.
- *
+ * Simple linear structures, which let you add and remove items one at a time.
+ * 
  * @author Samuel A. Rebelsky
  */
 public interface LinearStructure<T>
-    extends Iterable<T>
+    extends
+      Iterable<T>
 {
   /**
    * Add an element to the structure.
-   *
+   * 
    * @param val
-   *   the value to add.
-   * @pre
-   *   !this.isFull()
-   * @post
-   *   The element has been added to the structure.  At some point,
-   *   a call to get() will remove the element.
+   *          the value to add.
+   * @pre !this.isFull()
+   * @post The element has been added to the structure. At some point, a call to
+   *       get() will remove the element.
    * @exception Exception
-   *   If the structure is full.
+   *              If the structure is full.
    */
   public void put(T val)
     throws Exception;
 
   /**
-   * Remove an element from the structure according to the underlying
-   * policy.
-   *
-   * @return
-   *   val, a value.
-   * @pre
-   *   !this.isEmpty()
-   * @post
-   *   The structure contains one fewer copy of val.
+   * Remove an element from the structure according to the underlying policy.
+   * 
+   * @return val, a value.
+   * @pre !this.isEmpty()
+   * @post The structure contains one fewer copy of val.
    * @exception Exception
-   *   If the structure is empty.
+   *              If the structure is empty.
    */
   public T get()
     throws Exception;
 
   /**
    * Determine what element will next be removed by get.
-   *
-   * @return
-   *   val, a value.
-   * @pre
-   *   !this.isEmpty()
-   * @post
-   *   The next call to this.get() returns val.
+   * 
+   * @return val, a value.
+   * @pre !this.isEmpty()
+   * @post The next call to this.get() returns val.
    * @exception Exception
-   *   If the structure is empty.
+   *              If the structure is empty.
    */
   public T peek()
     throws Exception;
